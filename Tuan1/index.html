@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"
+        type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div style="text-align: center;margin: 0 auto">
+        <img src="" class="anh" style="width: 100px; height: 100px;"><br>
+        <button class="tuantu">Bật/Tắt LED Tuần Tự</button>
+        <button class="ngaunhien">Bật/Tắt LED Ngẫu nhiên</button>
+        <button class="cungluc">Bật LED Cùng Lúc</button>
+    </div>
+</body>
+
+</html>
+
+<script>
+    $('.tuantu').click(function () {
+        message = new Paho.MQTT.Message("tuantu");
+        message.destinationName = "22004266/LED";
+        client.send(message);
+    });
+    $('.ngaunhien').click(function () {
+        message = new Paho.MQTT.Message("ngaunhien");
+        message.destinationName = "22004266/LED";
+        client.send(message);
+    });
+    $('.cungluc').click(function () {
+        message = new Paho.MQTT.Message("cungluc");
+        message.destinationName = "22004266/LED";
+        client.send(message);
+    });
+
+    client = new Paho.MQTT.Client("broker.emqx.io", Number(8083), "36c1df6c-7e81-4389-b4c2-19432f22dec1clientId");
+
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+
+    client.connect({ onSuccess: onConnect });
+
+    function onConnect() {
+        console.log("onConnect");
+        // client.subscribe("World");
+    }
+
+    function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+        }
+    }
+
+    function onMessageArrived(message) {
+        console.log("onMessageArrived:" + message.payloadString);
+    }
+
+    var anh_bat = "https://i.imgur.com/pPqLQx4.png";
+    var anh_tat = "https://i.imgur.com/yRMydZv.png";
+    $('.anh').click(function () {
+        var anhht = $('.anh').attr('src');
+        if (anhht == anh_bat) {
+            $('.anh').attr('src', anh_tat);
+            message = new Paho.MQTT.Message("bat");
+            message.destinationName = "22004266/LED";
+            client.send(message);
+        } else {
+            $('.anh').attr('src', anh_bat);
+            message = new Paho.MQTT.Message("tat");
+            message.destinationName = "22004266/LED";
+            client.send(message);
+        }
+    });
+
+</script>
