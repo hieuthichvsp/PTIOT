@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"
+        type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" type="text/javascript"></script>
+</head>
+
+<body style="margin:0 auto; padding:0 auto; text-align:center;">
+    <h1>MQTT LCD</h1>
+    <input type="areatext" style="width: 500px; height: 200px;" class="lcd">
+    <button class="save">Save</button>
+</body>
+
+</html>
+
+<script>
+    $('.save').click(function () {
+        var text = $('.lcd').val();
+        console.log(text);
+        message = new Paho.MQTT.Message(text);
+        message.destinationName = "22004266/lcd";
+        client.send(message);
+    });
+
+    client = new Paho.MQTT.Client("broker.emqx.io", Number(8083), "clientId");
+
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+
+    client.connect({ onSuccess: onConnect });
+
+    function onConnect() {
+        console.log("onConnect");
+        // client.subscribe("World");
+    }
+
+    function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+        }
+    }
+
+    function onMessageArrived(message) {
+        console.log("onMessageArrived:" + message.payloadString);
+    }
+</script>
