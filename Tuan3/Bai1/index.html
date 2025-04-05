@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"
+        type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <form onsubmit="return false;">
+        <label>Den Xanh:</label><input name="led1" id="led1"><br>
+        <label>Den Vang:</label><input name="led2" id="led2"><br>
+        <label>Den Do:</label><input name="led3" id="led3"><br>
+        <Button class="gui">Gui</Button>
+        <span id="tb"></span>
+    </form>
+</body>
+
+</html>
+
+<script>
+    let tb = document.getElementById("tb");
+    $('.gui').click(function () {
+        let led1 = document.getElementById("led1").value;
+        let led2 = document.getElementById("led2").value;
+        let led3 = document.getElementById("led3").value;
+        const obj = {
+            led: [
+                { "1": led1 },
+                { "2": led2 },
+                { "3": led3 }
+            ]
+        };
+        const data = JSON.stringify(obj);
+        message = new Paho.MQTT.Message(data);
+        message.destinationName = "22004266/LED";
+        console.log(data);
+        client.send(message);
+        tb.innerHTML = "Dang gui";
+    });
+
+    client = new Paho.MQTT.Client("broker.emqx.io", Number(8083), "f554537b-02fd-4c78-8eb5-1f7b8c9f51ee");
+
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+
+    client.connect({ onSuccess: onConnect });
+
+    function onConnect() {
+        console.log("onConnect");
+        client.subscribe("22004266/RETURN");
+    }
+
+    function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+        }
+    }
+
+    function onMessageArrived(message) {
+        console.log("onMessageArrived:" + message.payloadString);
+        tb.innerHTML = message.payloadString;
+    }
+</script>
