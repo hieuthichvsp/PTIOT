@@ -71,6 +71,7 @@ void callback(char *topic, byte *message, unsigned int length)
             lcd.setCursor(0, dem1);
             lcd.print(stMessage);
             dem1++;
+            stMessage = "";
             if (dem1 == 4)
             {
                 dem1 = 0;

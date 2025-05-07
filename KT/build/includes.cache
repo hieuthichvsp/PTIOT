@@ -1,0 +1,17 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\lolhi\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.1.1\\cores\\esp32"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\lolhi\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.1.1\\variants\\doitESP32devkitV1"
+  },
+  {
+    "Sourcefile": "c:\\Users\\lolhi\\Documents\\Vsc_arduino\\PTIOT\\KT\\build\\sketch\\sketch.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]

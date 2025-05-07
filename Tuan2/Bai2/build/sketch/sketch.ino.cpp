@@ -21,9 +21,9 @@ void WIFIConnect();
 void MQTT_Reconnect();
 #line 53 "c:\\Users\\lolhi\\Documents\\Vsc_arduino\\PTIOT\\Tuan2\\Bai2\\sketch.ino"
 void callback(char *topic, byte *message, unsigned int length);
-#line 87 "c:\\Users\\lolhi\\Documents\\Vsc_arduino\\PTIOT\\Tuan2\\Bai2\\sketch.ino"
+#line 88 "c:\\Users\\lolhi\\Documents\\Vsc_arduino\\PTIOT\\Tuan2\\Bai2\\sketch.ino"
 void setup();
-#line 98 "c:\\Users\\lolhi\\Documents\\Vsc_arduino\\PTIOT\\Tuan2\\Bai2\\sketch.ino"
+#line 99 "c:\\Users\\lolhi\\Documents\\Vsc_arduino\\PTIOT\\Tuan2\\Bai2\\sketch.ino"
 void loop();
 #line 16 "c:\\Users\\lolhi\\Documents\\Vsc_arduino\\PTIOT\\Tuan2\\Bai2\\sketch.ino"
 void WIFIConnect()
@@ -83,6 +83,7 @@ void callback(char *topic, byte *message, unsigned int length)
             lcd.setCursor(0, dem1);
             lcd.print(stMessage);
             dem1++;
+            stMessage = "";
             if (dem1 == 4)
             {
                 dem1 = 0;
